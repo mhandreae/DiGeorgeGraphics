@@ -1,0 +1,50 @@
+---
+title: "DiGeorgeOccurencePlot15Jul2015"
+author: "Michael Andreae"
+date: "July 15, 2015"
+output: pdf_document
+---
+
+
+
+
+```{r, packages, message=FALSE, echo=FALSE, warning=FALSE}
+library(knitr) # required to set options in Markdown R
+library(ggplot2)
+```
+
+
+
+```{r, global_options, echo=FALSE}
+
+# set the directory to the project directory
+setwd("C:/Users/Micheal/Dropbox/Adriana/DiGeorge/DiGeorgeGraphics")
+
+# set options
+opts_chunk$set(fig.width=6, fig.height=4, fig.path='Figs/',
+               echo=FALSE, warning=FALSE, message=FALSE)
+```
+
+
+```{r}
+rm(list = ls())
+# make up some data
+id <- 1:10
+# date <- c(1,4,6,2,4,7,23,12,15,17)
+
+strDates <- c("01/05/1965","07/22/1965" ,"04/05/1965" ,"03/15/1965" ,"11/05/1965" ,"09/10/1965" ,"04/18/1965" ,"01/27/1965" ,"04/29/1965" ,"06/01/1965")
+date <- as.Date(strDates, "%m/%d/%Y")
+Colorlegend <- as.factor(c(rep(0,9),rep(1,1)))
+levels(Colorlegend) <- c("Patients", "Change in cutoff")
+biomarker <- c(19,59,25,41,53,64,55,91,32, 100)
+mydata <- data.frame(id=id, date=date, Colorlegend=Colorlegend, biomarker=biomarker)
+```
+
+```{r}
+g<- ggplot(data=mydata )
+p <- g + geom_segment( aes (x=date, y=rep(0,10), xend=date, yend=biomarker, color=Colorlegend)) 
+final <- p + geom_hline(aes(yintercept=50))
+final
+```
+
+Are we missing DiGorge kids with low TRc counts? Before the cutoff increase we detected additional cases that are missing afterwards in this occurence plot, which show the occurence of DiGeorge diagnosis in the NYS cohort over time. A vertical bar marks the occurence date in the time axis, the x-axis. The hight of the vertical bar indicates the level of the TRc cell count. The blue vertical bar marks the change in cutoff.
